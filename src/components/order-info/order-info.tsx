@@ -8,13 +8,17 @@ import {
   selectOrdersIsLoading,
   selectOrders
 } from '../../services/slices/orderDetailsSlice';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { selectIngredients } from '../../services/slices/ingredientsSlice';
+import { Modal } from '@components';
+import styles from '../ui/order-info/order-info.module.css';
 
 export const OrderInfo: FC = () => {
   const { number } = useParams();
   const ordersNumber = Number(number);
   const dispatch = useDispatch();
+  const location = useLocation();
+  const isModalView = location.state?.background;
 
   useEffect(() => {
     dispatch(fetchOrderByNumber(ordersNumber));
@@ -71,5 +75,26 @@ export const OrderInfo: FC = () => {
     return <Preloader />;
   }
 
-  return <OrderInfoUI orderInfo={orderInfo} />;
+  return (
+    <div className={`${styles.page} ${!isModalView ? styles.standalone : ''}`}>
+      {!isModalView && (
+        <h2 className='text text_type_digits-default mb-10'>
+          #{orderInfo.number}
+        </h2>
+      )}
+      <OrderInfoUI orderInfo={orderInfo} isModal={isModalView} />
+    </div>
+  );
+};
+
+// Компонент-обертка для модального окна с заказом
+export const OrderInfoModal: FC = () => {
+  const { number } = useParams();
+  const navigate = useNavigate();
+
+  return (
+    <Modal title={`#${number}`} onClose={() => navigate(-1)} isOrder>
+      <OrderInfo />
+    </Modal>
+  );
 };

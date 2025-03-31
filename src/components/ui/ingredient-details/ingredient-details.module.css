@@ -7,6 +7,10 @@
   width: 520px;
 }
 
+.standalone {
+  margin-top: calc(120 / 1040 * 100vh);
+}
+
 .nutritional_values {
   display: flex;
   justify-content: space-between;

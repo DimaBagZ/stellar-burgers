@@ -4,4 +4,6 @@ export type TModalUIProps = {
   title: string;
   onClose: () => void;
   children?: ReactNode;
+  isOrder?: boolean;
+  isIngredient?: boolean;
 };

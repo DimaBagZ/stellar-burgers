@@ -1,1 +1,1 @@
-export { OrderInfo } from './order-info';
+export { OrderInfo, OrderInfoModal } from './order-info';

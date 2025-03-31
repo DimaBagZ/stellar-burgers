@@ -30,6 +30,7 @@ import { useDispatch } from '../../services/store';
 import { fetchIngredients } from '../../services/slices/ingredientsSlice';
 import { useEffect } from 'react';
 import { fetchGetUser } from '../../services/slices/userSlice';
+import { OrderInfoModal } from '../order-info';
 
 /**
  * Компонент роутера приложения
@@ -124,30 +125,20 @@ const AppRouter = () => {
 
       {background && (
         <Routes>
-          <Route
-            path='/feed/:number'
-            element={
-              <Modal title={'Информация о заказе'} onClose={() => navigate(-1)}>
-                <OrderInfo />
-              </Modal>
-            }
-          />
+          <Route path='/feed/:number' element={<OrderInfoModal />} />
           <Route
             path='/ingredients/:id'
             element={
-              <Modal title={'Детали ингредиента'} onClose={() => navigate(-1)}>
+              <Modal
+                title={'Детали ингредиента'}
+                onClose={() => navigate(-1)}
+                isIngredient
+              >
                 <IngredientDetails />
               </Modal>
             }
           />
-          <Route
-            path='/profile/orders/:number'
-            element={
-              <Modal title={'Информация о заказе'} onClose={() => navigate(-1)}>
-                <OrderInfo />
-              </Modal>
-            }
-          />
+          <Route path='/profile/orders/:number' element={<OrderInfoModal />} />
         </Routes>
       )}
     </>

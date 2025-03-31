@@ -1,85 +1,73 @@
-import { FC, useMemo } from 'react';
-import { BurgerConstructorUI } from '@ui';
+import { FC, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from '../../services/store';
 import {
   selectConstructorBurger,
-  ingredientsToDown,
-  ingredientsToUp,
-  removeIngredient,
   clearConstructor
 } from '../../services/slices/burgerConstructorSlice';
+import { selectIsAuthenticated } from '../../services/slices/userSlice';
 import {
-  selectOrderIsLoading,
-  selectOrder,
+  fetchOrderBurgerApi,
   clearOrder,
-  fetchOrderBurgerApi
+  selectOrderIsLoading,
+  selectOrder
 } from '../../services/slices/currentOrderSlice';
-import { useNavigate } from 'react-router-dom';
-import { selectUserData } from '../../services/slices/userSlice';
+import { BurgerConstructorUI } from '@ui';
+import { Preloader } from '@ui';
 
 /**
  * Компонент конструктора бургера
  * Управляет сборкой бургера, расчетом стоимости и оформлением заказа
  */
 export const BurgerConstructor: FC = () => {
-  // Получаем данные из Redux store
-  const items = useSelector(selectConstructorBurger).constructorItems;
-  const orderRequest = useSelector(selectOrderIsLoading);
-  const orderModalData = useSelector(selectOrder);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const isAuthenticated = useSelector(selectUserData).name;
+  const navigate = useNavigate();
+  const { constructorItems } = useSelector(selectConstructorBurger);
+  const orderIsLoading = useSelector(selectOrderIsLoading);
+  const orderModalData = useSelector(selectOrder);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
 
-  /**
-   * Обработчик оформления заказа
-   * Проверяет авторизацию, наличие булки и отправляет заказ на сервер
-   */
+  // Очищаем конструктор только после успешного получения заказа
+  useEffect(() => {
+    if (orderModalData && !orderIsLoading) {
+      dispatch(clearConstructor());
+    }
+  }, [orderModalData, orderIsLoading, dispatch]);
+
   const onOrderClick = () => {
     if (!isAuthenticated) {
-      navigate('/login');
-    }
-
-    const { bun, ingredients } = items;
-    if (!bun) {
-      alert('Сначала соберите свой вкуснейший бургер!');
+      navigate('/login', { state: { from: '/' } });
       return;
     }
-
-    // Формируем массив ID ингредиентов для заказа
-    const order: string[] = [
-      bun._id,
-      ...ingredients.map((ingredient) => ingredient._id),
-      bun._id
+    if (!constructorItems.bun) {
+      return;
+    }
+    const orderData = [
+      constructorItems.bun._id,
+      ...constructorItems.ingredients.map((item) => item._id),
+      constructorItems.bun._id
     ];
-    dispatch(fetchOrderBurgerApi(order));
+    dispatch(fetchOrderBurgerApi(orderData));
+    setIsOrderModalOpen(true);
   };
 
-  /**
-   * Обработчик закрытия модального окна заказа
-   * Очищает данные заказа и конструктора
-   */
   const closeOrderModal = () => {
-    navigate('/', { replace: true });
+    setIsOrderModalOpen(false);
     dispatch(clearOrder());
-    dispatch(clearConstructor());
+    navigate('/');
   };
 
-  /**
-   * Расчет общей стоимости бургера
-   * Учитывает удвоенную стоимость булки и стоимость всех ингредиентов
-   */
-  const price = useMemo(
-    () =>
-      (items.bun ? items.bun.price * 2 : 0) +
-      items.ingredients.reduce((acc, ingredient) => acc + ingredient.price, 0),
-    [items]
-  );
+  const price = constructorItems.bun
+    ? constructorItems.bun.price * 2 +
+      constructorItems.ingredients.reduce((acc, item) => acc + item.price, 0)
+    : 0;
 
   return (
     <BurgerConstructorUI
       price={price}
-      orderRequest={orderRequest}
-      constructorItems={items}
+      constructorItems={constructorItems}
+      orderRequest={orderIsLoading}
       orderModalData={orderModalData}
       onOrderClick={onOrderClick}
       closeOrderModal={closeOrderModal}
