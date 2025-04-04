@@ -1,7 +1,14 @@
-import { TIngredient } from '@utils-types';
+import { TIngredient, TOrder } from '@utils-types';
 
 export type OrderInfoUIProps = {
-  orderInfo: TOrderInfo;
+  orderInfo: TOrder & {
+    ingredientsInfo: {
+      [key: string]: TIngredient & { count: number };
+    };
+    date: Date;
+    total: number;
+  };
+  isModal?: boolean;
 };
 
 type TOrderInfo = {

@@ -1,21 +1,33 @@
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
+import { useSelector, useDispatch } from '../../services/store';
+import {
+  fetchOrderByNumber,
+  selectOrdersIsLoading,
+  selectOrders
+} from '../../services/slices/orderDetailsSlice';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
+import { selectIngredients } from '../../services/slices/ingredientsSlice';
+import { Modal } from '@components';
+import styles from '../ui/order-info/order-info.module.css';
 
 export const OrderInfo: FC = () => {
-  /** TODO: взять переменные orderData и ingredients из стора */
-  const orderData = {
-    createdAt: '',
-    ingredients: [],
-    _id: '',
-    status: '',
-    name: '',
-    updatedAt: 'string',
-    number: 0
-  };
+  const { number } = useParams();
+  const ordersNumber = Number(number);
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const isModalView = location.state?.background;
 
-  const ingredients: TIngredient[] = [];
+  useEffect(() => {
+    dispatch(fetchOrderByNumber(ordersNumber));
+  }, []);
+
+  const orders = useSelector(selectOrders);
+  const orderData = orders.find((order) => order);
+
+  const ingredients: TIngredient[] = useSelector(selectIngredients);
 
   /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {
@@ -63,5 +75,26 @@ export const OrderInfo: FC = () => {
     return <Preloader />;
   }
 
-  return <OrderInfoUI orderInfo={orderInfo} />;
+  return (
+    <div className={`${styles.page} ${!isModalView ? styles.standalone : ''}`}>
+      {!isModalView && (
+        <h2 className='text text_type_digits-default mb-10'>
+          #{orderInfo.number}
+        </h2>
+      )}
+      <OrderInfoUI orderInfo={orderInfo} isModal={isModalView} />
+    </div>
+  );
+};
+
+// Компонент-обертка для модального окна с заказом
+export const OrderInfoModal: FC = () => {
+  const { number } = useParams();
+  const navigate = useNavigate();
+
+  return (
+    <Modal title={`#${number}`} onClose={() => navigate(-1)} isOrder>
+      <OrderInfo />
+    </Modal>
+  );
 };
