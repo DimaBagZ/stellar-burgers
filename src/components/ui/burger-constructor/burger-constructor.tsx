@@ -103,7 +103,7 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
     )}
 
     {orderModalData && (
-      <Modal onClose={closeOrderModal} title={orderModalData.name}>
+      <Modal onClose={closeOrderModal} title=''>
         <OrderDetailsUI orderNumber={orderModalData.number} />
       </Modal>
     )}
