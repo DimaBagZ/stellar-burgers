@@ -2,7 +2,9 @@ import { FC, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from '../../services/store';
 import {
-  selectConstructorBurger,
+  selectBurgerConstructorItems,
+  selectConstructorBun,
+  selectConstructorIngredientsArray,
   clearConstructor
 } from '../../services/slices/burgerConstructorSlice';
 import { selectIsAuthenticated } from '../../services/slices/userSlice';
@@ -22,13 +24,16 @@ import { Preloader } from '@ui';
 export const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { constructorItems } = useSelector(selectConstructorBurger);
+  const bun = useSelector(selectConstructorBun);
+  const ingredients = useSelector(selectConstructorIngredientsArray);
+
+  const constructorItems = { bun, ingredients };
+
   const orderIsLoading = useSelector(selectOrderIsLoading);
   const orderModalData = useSelector(selectOrder);
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
 
-  // Очищаем конструктор только после успешного получения заказа
   useEffect(() => {
     if (orderModalData && !orderIsLoading) {
       dispatch(clearConstructor());
@@ -40,13 +45,13 @@ export const BurgerConstructor: FC = () => {
       navigate('/login', { state: { from: '/' } });
       return;
     }
-    if (!constructorItems.bun) {
+    if (!bun) {
       return;
     }
     const orderData = [
-      constructorItems.bun._id,
-      ...constructorItems.ingredients.map((item) => item._id),
-      constructorItems.bun._id
+      bun._id,
+      ...ingredients.map((item) => item._id),
+      bun._id
     ];
     dispatch(fetchOrderBurgerApi(orderData));
     setIsOrderModalOpen(true);
@@ -58,9 +63,8 @@ export const BurgerConstructor: FC = () => {
     navigate('/');
   };
 
-  const price = constructorItems.bun
-    ? constructorItems.bun.price * 2 +
-      constructorItems.ingredients.reduce((acc, item) => acc + item.price, 0)
+  const price = bun
+    ? bun.price * 2 + ingredients.reduce((acc, item) => acc + item.price, 0)
     : 0;
 
   return (
