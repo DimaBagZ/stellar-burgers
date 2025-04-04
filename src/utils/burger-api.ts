@@ -89,17 +89,16 @@ export const getFeedsApi = () =>
       return Promise.reject(data);
     });
 
-export const getOrdersApi = () =>
-  fetchWithRefresh<TFeedsResponse>(`${URL}/orders`, {
+export const getOrdersApi = async () => {
+  const res = await fetchWithRefresh<TOrderResponse>(`${URL}/orders`, {
     method: 'GET',
     headers: {
-      'Content-Type': 'application/json;charset=utf-8',
-      authorization: getCookie('accessToken')
+      'Content-Type': 'application/json',
+      Authorization: getCookie('accessToken')
     } as HeadersInit
-  }).then((data) => {
-    if (data?.success) return data.orders;
-    return Promise.reject(data);
   });
+  return res;
+};
 
 export type TNewOrderResponse = TServerResponse<{
   order: TOrder;

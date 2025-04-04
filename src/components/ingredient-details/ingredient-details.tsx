@@ -2,8 +2,9 @@ import { FC } from 'react';
 import { Preloader } from '../ui/preloader';
 import { IngredientDetailsUI } from '../ui/ingredient-details';
 import { useSelector } from '../../services/store';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import styles from '../ui/ingredient-details/ingredient-details.module.css';
+import { Modal } from '@components';
 
 export const IngredientDetails: FC = () => {
   const { ingredients } = useSelector((store) => store.ingredients);
@@ -30,5 +31,28 @@ export const IngredientDetails: FC = () => {
       <h2 className='text text_type_main-large mb-5'>Детали ингредиента</h2>
       <IngredientDetailsUI ingredientData={ingredientData} />
     </div>
+  );
+};
+
+export const IngredientDetailsModal: FC = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const background = location.state?.background;
+
+  return (
+    <Modal
+      title={'Детали ингредиента'}
+      onClose={() => {
+        if (background) {
+          navigate(-1);
+        } else {
+          navigate('/');
+        }
+      }}
+      isIngredient
+    >
+      <IngredientDetails />
+    </Modal>
   );
 };

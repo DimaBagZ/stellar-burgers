@@ -31,6 +31,8 @@ import { fetchIngredients } from '../../services/slices/ingredientsSlice';
 import { useEffect } from 'react';
 import { fetchGetUser } from '../../services/slices/userSlice';
 import { OrderInfoModal } from '../order-info';
+import { IngredientDetailsModal } from '../ingredient-details';
+import { getCookie } from '../../utils/cookie';
 
 /**
  * Компонент роутера приложения
@@ -49,7 +51,9 @@ const AppRouter = () => {
    */
   useEffect(() => {
     dispatch(fetchIngredients());
-    dispatch(fetchGetUser());
+    if (getCookie('accessToken')) {
+      dispatch(fetchGetUser());
+    }
   }, []);
 
   return (
@@ -126,18 +130,7 @@ const AppRouter = () => {
       {background && (
         <Routes>
           <Route path='/feed/:number' element={<OrderInfoModal />} />
-          <Route
-            path='/ingredients/:id'
-            element={
-              <Modal
-                title={'Детали ингредиента'}
-                onClose={() => navigate(-1)}
-                isIngredient
-              >
-                <IngredientDetails />
-              </Modal>
-            }
-          />
+          <Route path='/ingredients/:id' element={<IngredientDetailsModal />} />
           <Route path='/profile/orders/:number' element={<OrderInfoModal />} />
         </Routes>
       )}

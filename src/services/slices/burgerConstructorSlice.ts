@@ -116,12 +116,32 @@ const burgerConstructorSlice = createSlice({
     /**
      * Селектор для получения всего состояния конструктора
      */
-    selectConstructorBurger: (state) => state
+    selectConstructorBurger: (state) => state,
+    /**
+     * Селектор для получения элементов конструктора (булка и ингредиенты)
+     */
+    selectBurgerConstructorItems: (state) => state.constructorItems,
+    /**
+     * Селектор для получения ТОЛЬКО булки конструктора
+     */
+    selectConstructorBun: (state) => state.constructorItems.bun,
+    /**
+     * Селектор для получения ТОЛЬКО массива ингредиентов конструктора
+     */
+    selectConstructorIngredientsArray: (state) =>
+      state.constructorItems.ingredients
   }
 });
 
 export const burgerConstructorReducer = burgerConstructorSlice.reducer;
-export const { selectConstructorBurger } = burgerConstructorSlice.selectors;
+
+export const {
+  selectConstructorBurger,
+  selectBurgerConstructorItems,
+  selectConstructorBun,
+  selectConstructorIngredientsArray
+} = burgerConstructorSlice.selectors;
+
 export const {
   addIngredients,
   ingredientsToUp,

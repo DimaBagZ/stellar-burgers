@@ -3,6 +3,10 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getOrdersApi } from '../../utils/burger-api';
 import { TOrder } from '../../utils/types';
 
+interface IUserOrdersResponse {
+  orders: TOrder[];
+}
+
 /**
  * Интерфейс состояния заказов пользователя
  * @property userOrders - Массив заказов пользователя
@@ -27,7 +31,7 @@ const initialState: IUserOrdersSliceState = {
 /**
  * Асинхронный thunk для получения заказов пользователя
  */
-export const fetchUserOrdersApi = createAsyncThunk(
+export const fetchUserOrdersApi = createAsyncThunk<IUserOrdersResponse>(
   'userOrders/fetchUserOrdersApi',
   async () => getOrdersApi()
 );
@@ -60,7 +64,7 @@ const userOrdersSlice = createSlice({
       })
       .addCase(fetchUserOrdersApi.fulfilled, (state, action) => {
         state.userOrdersIsLoading = false;
-        state.userOrders = action.payload;
+        state.userOrders = action.payload.orders;
       });
   }
 });
