@@ -91,9 +91,21 @@ export const OrderInfo: FC = () => {
 export const OrderInfoModal: FC = () => {
   const { number } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+  const background = location.state?.background;
 
   return (
-    <Modal title={`#${number}`} onClose={() => navigate(-1)} isOrder>
+    <Modal
+      title={`#${number}`}
+      onClose={() => {
+        if (background) {
+          navigate(-1);
+        } else {
+          navigate('/feed');
+        }
+      }}
+      isOrder
+    >
       <OrderInfo />
     </Modal>
   );
