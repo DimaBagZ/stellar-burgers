@@ -36,7 +36,9 @@ jobs:
           echo "BURGER_API_URL=https://norma.education-services.ru/api" >> .env
 
       - name: Build project
-        run: npm run build
+        run: |
+          echo "NODE_ENV before build: $NODE_ENV"
+          NODE_ENV=production npm run build
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

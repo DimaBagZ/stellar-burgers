@@ -6,6 +6,7 @@ const Dotenv = require('dotenv-webpack');
 const isProduction = process.env.NODE_ENV === 'production';
 console.log('NODE_ENV:', process.env.NODE_ENV);
 console.log('isProduction:', isProduction);
+console.log('PublicPath will be:', isProduction ? '/stellar-burgers/' : '/');
 
 module.exports = {
   entry: path.resolve(__dirname, './src/index.tsx'),
