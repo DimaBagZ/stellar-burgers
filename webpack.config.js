@@ -78,8 +78,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, './dist'),
-    filename: 'bundle.js',
-    publicPath: isProduction ? './' : '/'
+    filename: 'bundle.js'
   },
   // Логирование для отладки
   plugins: [
