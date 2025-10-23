@@ -287,19 +287,21 @@ Cypress тесты находятся в папке `cypress/e2e`. Они про
 
 ### Главная страница
 
-<img width="1024" height="768" alt="Constructor" src="https://github.com/user-attachments/assets/placeholder" />
+<img width="1918" height="919" alt="image" src="https://github.com/user-attachments/assets/2b539ee9-72bc-45d0-b187-2285f1d98dcc" />
 
 _Интерфейс конструктора бургера с ингредиентами_
 
 ### Лента заказов
 
-<img width="1024" height="768" alt="Feed" src="https://github.com/user-attachments/assets/placeholder" />
+<img width="1919" height="916" alt="image" src="https://github.com/user-attachments/assets/8162aade-0134-4c69-9a7c-e6f13abf567f" />
+
 
 _Лента заказов в реальном времени_
 
 ### Личный кабинет
 
-<img width="1024" height="768" alt="Profile" src="https://github.com/user-attachments/assets/placeholder" />
+<img width="1919" height="925" alt="image" src="https://github.com/user-attachments/assets/6c2013eb-0308-4642-91f0-c63fccca9479" />
+<img width="1919" height="914" alt="image" src="https://github.com/user-attachments/assets/c88d9958-33b6-4ee1-8413-2d95daa83b62" />
 
 _История заказов пользователя_
 
