@@ -308,7 +308,6 @@ _История заказов пользователя_
 
 - **🌐 Live Demo**: [https://dimabagz.github.io/stellar-burgers/](https://dimabagz.github.io/stellar-burgers/)
 - **📁 Repository**: [https://github.com/DimaBagZ/stellar-burgers](https://github.com/DimaBagZ/stellar-burgers)
-- **📚 Storybook**: [https://dimabagz.github.io/stellar-burgers/storybook/](https://dimabagz.github.io/stellar-burgers/storybook/)
 - **🎨 Figma макет**: [https://www.figma.com/file/vIywAvqfkOIRWGOkfOnReY/React-Fullstack\_-Проектные-задачи-(3-месяца)\_external_link?type=design&node-id=0-1&mode=design](<https://www.figma.com/file/vIywAvqfkOIRWGOkfOnReY/React-Fullstack_-Проектные-задачи-(3-месяца)_external_link?type=design&node-id=0-1&mode=design>)
 
 ---
