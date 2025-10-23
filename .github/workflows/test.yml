@@ -24,6 +24,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Create .env file
+        run: |
+          echo "NODE_ENV=development" > .env
+          echo "BURGER_API_URL=https://norma.education-services.ru/api" >> .env
+
       - name: Run Jest tests
         run: npm test -- --coverage --watchAll=false
 
@@ -33,6 +38,9 @@ jobs:
           start: npm start
           wait-on: 'http://localhost:4000'
           wait-on-timeout: 120
+        env:
+          NODE_ENV: development
+          BURGER_API_URL: https://norma.education-services.ru/api
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
