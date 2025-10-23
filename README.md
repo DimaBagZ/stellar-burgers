@@ -2,7 +2,7 @@
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-🌐%20Online-brightgreen)](https://dimabagz.github.io/stellar-burgers/)
 [![GitHub](https://img.shields.io/badge/GitHub-📁%20Repository-blue)](https://github.com/DimaBagZ/stellar-burgers)
-[![Tests](https://img.shields.io/badge/Tests-✅%20Passing-green)](https://github.com/DimaBagZ/stellar-burgers/actions)
+[![Tests](https://img.shields.io/badge/Tests-✅%20Passing-green)](https://github.com/DimaBagZ/stellar-burgers/actions/workflows/test.yml)
 
 **Современное веб-приложение для заказа бургеров** с полным функционалом интернет-магазина. React + TypeScript + Redux Toolkit + WebSocket.
 
@@ -294,7 +294,6 @@ _Интерфейс конструктора бургера с ингредие�
 ### Лента заказов
 
 <img width="1919" height="916" alt="image" src="https://github.com/user-attachments/assets/8162aade-0134-4c69-9a7c-e6f13abf567f" />
-
 
 _Лента заказов в реальном времени_
 
