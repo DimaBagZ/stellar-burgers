@@ -79,7 +79,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, './dist'),
     filename: 'bundle.js',
-    publicPath: isProduction ? '/stellar-burgers/' : '/'
+    publicPath: isProduction ? './' : '/'
   },
   // Логирование для отладки
   plugins: [
@@ -94,7 +94,7 @@ module.exports = {
     {
       apply: (compiler) => {
         compiler.hooks.beforeRun.tap('LogPlugin', () => {
-          console.log('PublicPath:', isProduction ? '/stellar-burgers/' : '/');
+          console.log('PublicPath:', isProduction ? './' : '/');
         });
       }
     }
