@@ -4,6 +4,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 
 const isProduction = process.env.NODE_ENV === 'production';
+console.log('NODE_ENV:', process.env.NODE_ENV);
+console.log('isProduction:', isProduction);
 
 module.exports = {
   entry: path.resolve(__dirname, './src/index.tsx'),
@@ -49,15 +51,6 @@ module.exports = {
       }
     ]
   },
-  plugins: [
-    new ESLintPlugin({
-      extensions: ['.js', '.jsx', '.ts', '.tsx']
-    }),
-    new HtmlWebpackPlugin({
-      template: './public/index.html'
-    }),
-    new Dotenv()
-  ],
   resolve: {
     extensions: [
       '*',
@@ -88,6 +81,24 @@ module.exports = {
     filename: 'bundle.js',
     publicPath: isProduction ? '/stellar-burgers/' : '/'
   },
+  // Логирование для отладки
+  plugins: [
+    new ESLintPlugin({
+      extensions: ['.js', '.jsx', '.ts', '.tsx']
+    }),
+    new HtmlWebpackPlugin({
+      template: './public/index.html'
+    }),
+    new Dotenv(),
+    // Добавляем плагин для логирования
+    {
+      apply: (compiler) => {
+        compiler.hooks.beforeRun.tap('LogPlugin', () => {
+          console.log('PublicPath:', isProduction ? '/stellar-burgers/' : '/');
+        });
+      }
+    }
+  ],
   devServer: {
     static: path.join(__dirname, './dist'),
     compress: true,
