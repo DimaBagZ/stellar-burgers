@@ -1,5 +1,6 @@
 import { setCookie, getCookie } from '../utils/cookie';
 import { TIngredient, TOrder, TUser } from './types';
+import { mockIngredients } from './mock-data';
 
 const URL = process.env.BURGER_API_URL;
 
@@ -79,6 +80,10 @@ export const getIngredientsApi = () =>
         return data.data;
       }
       return Promise.reject(data);
+    })
+    .catch((error) => {
+      console.warn('API недоступен, используем мок-данные:', error);
+      return mockIngredients;
     });
 
 export const getFeedsApi = () =>
